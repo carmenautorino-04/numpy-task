@@ -148,21 +148,23 @@ Quando abbiamo due matrici di dimensione identica (come due matrici 2x2), possia
 Implementa la funzione:
 
 ```python
-correlazione_matrici(m1: list, m2: list) -> float
+correlazione_matrici(m1: list, m2: list) -> np.ndarray
 ```
 
-Questa funzione riceve due matrici 2x2 (sotto forma di liste di liste) e restituisce il coefficiente di correlazione di Pearson (un numero float compreso tra `-1.0` e `1.0`) calcolato tra i valori “appiattiti” (sequenziali) delle due matrici.
+Questa funzione riceve due matrici 2x2 (sotto forma di liste di liste) e restituisce la matrice di correlazione calcolata tra i valori “appiattiti” (sequenziali) delle due matrici.
 
 ### Esempi
 
 ```python id="cm1"
 Input: m1 = [[1, 2], [3, 4]], m2 = [[2, 4], [6, 8]]
-Output: 1.0  # Perfetta correlazione positiva
+Output: [[1. 1.]
+ [1. 1.]]
 ```
 
 ```python id="cm2"
 Input: m1 = [[1, 2], [3, 4]], m2 = [[4, 3], [2, 1]]
-Output: -1.0  # Perfetta correlazione negativa
+Output: [[ 1. -1.]
+ [-1.  1.]]
 ```
 ---
 
