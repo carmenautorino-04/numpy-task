@@ -1,10 +1,49 @@
-import numpy as np
+#import numpy as np
 
 # Controlla il file readme.md per i dettagli su ciascun sub-task
 
 def prodotto_scalare(v1: list, v2: list) -> float:
     """Sub-task 1: Prodotto Scalare."""
     pass
+from typing import List
+
+
+def prodotto_scalare(v1: List[float], v2: List[float]) -> float:
+    """
+    Calcola il prodotto scalare tra due vettori numerici.
+
+    :param v1: prima lista di numeri
+    :param v2: seconda lista di numeri
+    :return: prodotto scalare (float)
+
+    :raises TypeError: se gli input non sono liste o contengono elementi non numerici
+    :raises ValueError: se le liste hanno lunghezze diverse o sono vuote
+    """
+
+    # Controllo tipo liste
+    if not isinstance(v1, list) or not isinstance(v2, list):
+        raise TypeError("Entrambi gli input devono essere liste.")
+
+    # Controllo liste vuote
+    if len(v1) == 0 or len(v2) == 0:
+        raise ValueError("Le liste non possono essere vuote.")
+
+    # Controllo lunghezza
+    if len(v1) != len(v2):
+        raise ValueError("Le liste devono avere la stessa lunghezza.")
+
+    # Controllo elementi numerici
+    for i, (a, b) in enumerate(zip(v1, v2)):
+        if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
+            raise TypeError(f"Gli elementi in posizione {i} non sono numerici.")
+
+    # Calcolo prodotto scalare
+    prodotto = sum(a * b for a, b in zip(v1, v2))
+
+    return float(prodotto)
+
+
+
 
 def rango_matrice(m: list) -> int:
     """Sub-task 2: Calcola il rango di una matrice."""
