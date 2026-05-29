@@ -1,4 +1,4 @@
-#import numpy as np
+import numpy as np
 
 # Controlla il file readme.md per i dettagli su ciascun sub-task
 
@@ -191,11 +191,75 @@ def risolvi_sistema_lineare(A: list, b: list) -> list:
 
 def correlazione_matrici(m1: list, m2: list) -> np.ndarray:
     """Sub-task 4: Correlazione tra Matrici 2x2."""
-    pass
 
+
+
+
+
+
+def correlazione_matrici(m1: list, m2: list) -> np.ndarray:
+    """
+    Calcola la matrice di correlazione tra due matrici 2x2,
+    considerando i valori appiattiti come due variabili.
+
+    :param m1: prima matrice 2x2 (lista di liste)
+    :param m2: seconda matrice 2x2 (lista di liste)
+    :return: matrice di correlazione 2x2 (np.ndarray)
+
+    :raises TypeError, ValueError: in caso di input non validi
+    """
+
+    # --- Controlli ---
+    def valida(m, nome):
+        if not isinstance(m, list) or len(m) != 2:
+            raise ValueError(f"{nome} deve essere una matrice 2x2.")
+        for i, r in enumerate(m):
+            if not isinstance(r, list) or len(r) != 2:
+                raise ValueError(f"{nome} deve essere una matrice 2x2.")
+            for j, val in enumerate(r):
+                if not isinstance(val, (int, float)):
+                    raise TypeError(f"{nome}[{i}][{j}] non è numerico.")
+
+    valida(m1, "m1")
+    valida(m2, "m2")
+
+    # --- Appiattimento ---
+    v1 = np.array([m1[0][0], m1[0][1], m1[1][0], m1[1][1]], dtype=float)
+    v2 = np.array([m2[0][0], m2[0][1], m2[1][0], m2[1][1]], dtype=float)
+
+    # --- Controllo varianza ---
+    if np.allclose(np.var(v1), 0) or np.allclose(np.var(v2), 0):
+        raise ValueError("Varianza nulla: correlazione non definita.")
+
+    # --- Matrice dati (2 variabili, 4 osservazioni) ---
+    data = np.vstack((v1, v2))
+
+    # --- Matrice di correlazione ---
+    corr_matrix = np.corrcoef(data)
+
+    return corr_matrix
+
+    pass
 def operazioni_elemento_per_elemento(v1: list) -> tuple:
     """Sub-task 5: Restituisce (seno, coseno, arcoseno, arcocoseno) elemento per elemento calcolati sul primo array."""
     pass
+
+import numpy as np
+
+
+def operazioni_elemento_per_elemento(v1: list) -> tuple:
+    """
+    Calcola seno, coseno, arcoseno e arcocoseno elemento per elemento.
+
+    :param v1: lista di numeri
+    :return: tupla (sin, cos, arcsin, arccos) come np.ndarray
+
+    :raises TypeError, ValueError: in caso di input non validi
+    """
+
+    # --- Controlli ---
+    if not isinstance(v1, list) or not v1:
+        raise ValueError("L'input deve essere una lista non vuota.")
 
 
 def main():
