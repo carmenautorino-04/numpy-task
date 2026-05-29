@@ -121,6 +121,73 @@ def rango_matrice(m: list) -> int:
 def risolvi_sistema_lineare(A: list, b: list) -> np.ndarray:
     """Sub-task 3: Risolvere un Sistema Lineare."""
     pass
+def risolvi_sistema_lineare(A: list, b: list) -> list:
+    """
+    Risolve il sistema lineare Ax = b usando l'eliminazione di Gauss.
+
+    :param A: matrice quadrata (lista di liste)
+    :param b: vettore termini noti (lista)
+    :return: soluzione x (lista di float)
+
+    :raises TypeError: input non validi
+    :raises ValueError: sistema non risolvibile o dati inconsistent
+    """
+
+    # --- Controlli ---
+    if not isinstance(A, list) or not A:
+        raise ValueError("A deve essere una lista di liste non vuota.")
+    if not all(isinstance(r, list) for r in A):
+        raise TypeError("A deve essere una lista di liste.")
+
+    n = len(A)
+    if not all(len(r) == n for r in A):
+        raise ValueError("A deve essere quadrata.")
+
+    if not isinstance(b, list) or len(b) != n:
+        raise ValueError("b deve essere una lista lunga quanto A.")
+
+    for i in range(n):
+        for j in range(n):
+            if not isinstance(A[i][j], (int, float)):
+                raise TypeError(f"A[{i}][{j}] non numerico.")
+        if not isinstance(b[i], (int, float)):
+            raise TypeError(f"b[{i}] non numerico.")
+
+    # --- Copia in float ---
+    A = [[float(x) for x in r] for r in A]
+    b = [float(x) for x in b]
+
+    # --- Eliminazione di Gauss ---
+    for i in range(n):
+        # Pivot (gestione pivot nullo)
+        if abs(A[i][i]) < 1e-12:
+            for k in range(i + 1, n):
+                if abs(A[k][i]) > 1e-12:
+                    A[i], A[k] = A[k], A[i]
+                    b[i], b[k] = b[k], b[i]
+                    break
+            else:
+                raise ValueError("Sistema non ha soluzione unica (pivot nullo).")
+
+        # Normalizzazione riga
+        pivot = A[i][i]
+        A[i] = [x / pivot for x in A[i]]
+        b[i] /= pivot
+
+        # Eliminazione sotto
+        for k in range(i + 1, n):
+            fattore = A[k][i]
+            A[k] = [A[k][j] - fattore * A[i][j] for j in range(n)]
+            b[k] -= fattore * b[i]
+
+    # --- Sostituzione all'indietro ---
+    x = [0.0] * n
+    for i in reversed(range(n)):
+        x[i] = b[i] - sum(A[i][j] * x[j] for j in range(i + 1, n))
+
+    return x
+
+
 
 def correlazione_matrici(m1: list, m2: list) -> np.ndarray:
     """Sub-task 4: Correlazione tra Matrici 2x2."""
