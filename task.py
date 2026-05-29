@@ -48,7 +48,76 @@ def prodotto_scalare(v1: List[float], v2: List[float]) -> float:
 def rango_matrice(m: list) -> int:
     """Sub-task 2: Calcola il rango di una matrice."""
     pass
+def rango_matrice(m: list) -> int:
+    """
+    Calcola il rango di una matrice (numero massimo di righe linearmente indipendenti).
 
+    :param m: matrice rappresentata come lista di liste
+    :return: rango (int)
+
+    :raises TypeError: se la struttura o gli elementi non sono validi
+    :raises ValueError: se la matrice è vuota o irregolare
+    """
+
+    # --- Controlli di validità ---
+    if not isinstance(m, list) or not m:
+        raise ValueError("La matrice deve essere una lista non vuota di liste.")
+
+    if not all(isinstance(riga, list) for riga in m):
+        raise TypeError("La matrice deve essere una lista di liste.")
+
+    n_col = len(m[0])
+    if n_col == 0:
+        raise ValueError("Le righe non possono essere vuote.")
+
+    if not all(len(riga) == n_col for riga in m):
+        raise ValueError("Tutte le righe devono avere la stessa lunghezza.")
+
+    for i, riga in enumerate(m):
+        for j, val in enumerate(riga):
+            if not isinstance(val, (int, float)):
+                raise TypeError(f"Elemento non numerico in posizione ({i},{j})")
+
+    # --- Copia della matrice in float ---
+    A = [list(map(float, riga)) for riga in m]
+
+    righe = len(A)
+    colonne = n_col
+    rango = 0
+    EPS = 1e-10  # tolleranza per confronti con zero
+
+    r = 0  # riga corrente
+
+    for c in range(colonne):
+        # Trova pivot
+        pivot = None
+        for i in range(r, righe):
+            if abs(A[i][c]) > EPS:
+                pivot = i
+                break
+
+        if pivot is None:
+            continue
+
+        # Scambia righe
+        A[r], A[pivot] = A[pivot], A[r]
+
+        # Normalizza la riga pivot (opzionale ma utile)
+        pivot_val = A[r][c]
+        A[r] = [x / pivot_val for x in A[r]]
+
+        # Elimina sotto
+        for i in range(r + 1, righe):
+            fattore = A[i][c]
+            A[i] = [A[i][j] - fattore * A[r][j] for j in range(colonne)]
+
+        rango += 1
+        r += 1
+
+        if r == righe:
+            break
+
+    return rango
 def risolvi_sistema_lineare(A: list, b: list) -> np.ndarray:
     """Sub-task 3: Risolvere un Sistema Lineare."""
     pass
